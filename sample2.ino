@@ -1,7 +1,7 @@
 //
 // ABH3CAN HOST サンプルソフト 
 //        2021.2.4　Ishikawa
-//
+//        2021.5.24　一部変更
 
 #include <ABH3CAN.h>        //ABH3CANライブラリのインクルード
 ABH3CAN  par;               //CAN通信構造体の定義
@@ -25,10 +25,9 @@ void get_status(ABH3CAN *par) {
   Serial.print("VelB:"); Serial.println(cnvCAN2Vel(par->DP0R.io.bvel_fb));     //ABH3 B軸速度[min^-1]の取得
   Serial.print("VelY:"); Serial.println(cnvCAN2Vel(par->DP0R.io.yvel_fb));     //ABH3 Y軸速度[min^-1]の取得
   Serial.print("VelX:"); Serial.println(cnvCAN2Vel(par->DP0R.io.xvel_fb));     //ABH3 X軸速度[min^-1]の取得
-  abh3_can_reqPulse(par);                                                     //ABH3 AB軸積算パルスの取得命令発行
-  Serial.print("PulseA:"); Serial.println(par->DP1R.io.apulse);                //ABH3 A軸積算パルスの取得
-  Serial.print("PulseB:"); Serial.println(par->DP1R.io.bpulse);                //ABH3 B軸積算パルスの取得
 
+
+  
   Serial.println("***********************************************************");
   Serial.println("                    Broad Cast Packet                      ");
   Serial.println("***********************************************************");
@@ -44,8 +43,8 @@ void get_status(ABH3CAN *par) {
   Serial.print("FBKVelAY:"); Serial.println(cnvCAN2Vel(par->BR2.io.ayvel_fb)); //ABH3 A/Y軸速度[min^-1]帰還の取得
   Serial.print("FBKVelBX:"); Serial.println(cnvCAN2Vel(par->BR2.io.bxvel_fb)); //ABH3 B/X軸速度[min^-1]帰還の取得
   abh3_can_reqBRD(0x2b, par);                                                    //ブロードキャストパケット3(0x2b)要求　*電流指令/負荷率の取得
-  Serial.print("COMTrqAY:"); Serial.println(cnvCAN2Trq(par->BR3.io.aycrt_com));  //ABH3 A/Y軸電流[%]指令の取得
-  Serial.print("COMTrqBX:"); Serial.println(cnvCAN2Trq(par->BR3.io.bxcrt_com));  //ABH3 B/X軸電流[%]指令の取得
+  Serial.print("COMTrqAY:"); Serial.println(cnvCAN2Cur(par->BR3.io.aycrt_com));  //ABH3 A/Y軸電流[%]指令の取得
+  Serial.print("COMTrqBX:"); Serial.println(cnvCAN2Cur(par->BR3.io.bxcrt_com));  //ABH3 B/X軸電流[%]指令の取得
   Serial.print("LoadA:");    Serial.println(cnvCAN2Load(par->BR3.io.aload));     //ABH3 A/Y軸負荷率[%]帰還の取得
   Serial.print("LoadB:");    Serial.println(cnvCAN2Load(par->BR3.io.bload));     //ABH3 B/X軸負荷率[%]帰還の取得
   abh3_can_reqBRD(0x2c, par);                                                    //ブロードキャストパケット4(0x2c)要求　*パルス積算値の取得
